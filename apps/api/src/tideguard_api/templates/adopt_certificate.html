@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adopt-a-Beach Certificate — {{ segment.display_name }}</title>
+<style>
+ @page { size: A4; margin: 20mm; }
+ body { font-family: "Helvetica", "Arial", sans-serif; color: #111; text-align: center; }
+ h1 { color: #0f766e; font-size: 32pt; margin-bottom: 0; letter-spacing: 1px; }
+ .subtitle { color: #6b7280; font-size: 12pt; margin-top: 4pt; }
+ .adopter { font-size: 28pt; font-weight: 700; margin: 24pt 0 8pt; color: #111; }
+ .segment { font-size: 14pt; color: #0f766e; margin-bottom: 18pt; }
+ .border { border: 2px solid #0f766e; padding: 32pt; border-radius: 14pt; margin: 18pt 0; }
+ .seal { font-size: 10pt; color: #6b7280; margin-top: 18pt; }
+ .hash { font-family: "Monaco", monospace; font-size: 8pt; word-break: break-all; color:#6b7280; }
+</style>
+</head>
+<body>
+<div class="border">
+ <h1>CERTIFICATE OF ADOPTION</h1>
+ <div class="subtitle">TideGuard · Adopt-a-Beach Program</div>
+
+ <div class="adopter">{{ adopter_name }}</div>
+ <div class="segment">has adopted <strong>{{ segment.display_name }}</strong> ({{ segment.slug }})<br>
+ length ≈ {{ "%.0f"|format(segment.length_m) }} m · midpoint {{ "%.4f"|format(segment.midpoint_lat) }}°, {{ "%.4f"|format(segment.midpoint_lng) }}°</div>
+
+ <p>From {{ starts_at }} to {{ ends_at }} this stretch of coast is under
+   the protection of the named adopter. Weekly forecasts and any cleanup
+   activity in the area will be associated with this adoption.</p>
+
+ <div class="seal">
+  Adoption ID: {{ adoption_id }}<br>
+  Issued: {{ generated_at }}<br>
+  <span class="hash">{{ verification_hash }}</span>
+ </div>
+</div>
+<p style="color:#6b7280;font-size:9pt">Powered by TideGuard · https://tideguard.app</p>
+</body>
+</html>

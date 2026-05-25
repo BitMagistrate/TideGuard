@@ -1,0 +1,25 @@
+title = "TideGuard AI — gitleaks config"
+
+# We trust the default gitleaks ruleset and only add allowlists for the
+# strings that appear in templates / example .env / synthetic test
+# fixtures and are NOT real secrets.
+
+[extend]
+useDefault = true
+
+[[allowlist.regexTarget]]
+regex = "tideguard\\.app|api\\.tideguard\\.app|status\\.tideguard\\.app"
+
+[[allowlist.paths]]
+description = "documentation, fixtures and example .env"
+paths = [
+    "\\.env\\.example$",
+    "^docs/",
+    "^apps/api/tests/fixtures/",
+    "^apps/ml/tests/fixtures/",
+    "^content/lessons/",
+]
+
+[[allowlist.regexes]]
+description = "synthetic seeds for tests"
+regex = "['\"](?:test|demo|seed|example|sample|fixture)[_-]?(?:secret|password|key|token)['\"]"

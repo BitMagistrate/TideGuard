@@ -1,0 +1,33 @@
+[project]
+name = "tideguard-bot"
+version = "0.1.0"
+description = "Telegram bot for TideGuard AI"
+readme = "README.md"
+authors = [
+    { name = "Vladimir Yermolenko", email = "scaleblinkk@vk.com" }
+]
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "python-telegram-bot==21.4",
+    "httpx>=0.27,<1.0",
+    "structlog>=24.0,<25.0",
+    "pydantic>=2.6,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tideguard_bot"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

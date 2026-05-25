@@ -1,0 +1,46 @@
+name: Bug report
+description: Something is broken in TideGuard. Help us fix it.
+title: "[bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What is broken?
+      description: One paragraph. Be specific.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: |
+        1. Go to ...
+        2. Click ...
+        3. See error ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where (URL / commit / version)
+      placeholder: "tideguard.app /method · commit abc1234"
+    validations:
+      required: false
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - "S1 — service down"
+        - "S2 — feature broken"
+        - "S3 — degradation"
+        - "S4 — cosmetic"
+    validations:
+      required: true

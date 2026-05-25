@@ -1,0 +1,37 @@
+name: CI - Web
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/ci-web.yml'
+  pull_request:
+    paths:
+      - 'apps/web/**'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/ci-web.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile=false
+      - name: Lint
+        working-directory: apps/web
+        run: pnpm exec next lint
+      - name: Test
+        working-directory: apps/web
+        run: pnpm exec vitest run
+      - name: Build
+        working-directory: apps/web
+        run: pnpm exec next build

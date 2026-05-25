@@ -1,0 +1,55 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "group:allNonMajor",
+    ":semanticCommits",
+    ":timezone(Europe/Moscow)"
+  ],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on Monday"]
+  },
+  "schedule": [
+    "after 9pm every weekday",
+    "before 8am every weekday",
+    "every weekend"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^torch", "^numpy", "^scipy"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["pip_requirements", "poetry", "pep621"],
+      "groupName": "python deps"
+    },
+    {
+      "matchManagers": ["npm"],
+      "groupName": "javascript deps"
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "groupName": "docker base images"
+    },
+    {
+      "matchPackagePatterns": [".+"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchPackagePatterns": [".+"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "minimumReleaseAge": "0 days"
+  },
+  "osvVulnerabilityAlerts": true
+}

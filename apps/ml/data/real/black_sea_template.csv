@@ -1,0 +1,11 @@
+lon,lat,ts_seconds,concentration,source,license,debris_type,notes
+36.4111,44.5556,1612137600,0.4200,Pogojeva2021_S1,CC-BY-4.0,macro,"Anapa beach transect, January 2021"
+37.7833,44.7167,1619827200,0.5800,Pogojeva2021_S1,CC-BY-4.0,macro,"Novorossiysk bay sample, May 2021"
+39.7233,43.5853,1625097600,0.6100,Pogojeva2021_S1,CC-BY-4.0,meso,"Sochi nearshore composite, July 2021"
+39.0708,44.1029,1638316800,0.3300,Pogojeva2021_S1,CC-BY-4.0,macro,"Tuapse bay transect, December 2021"
+28.0700,42.6800,1656633600,0.2800,MDMAP_2022_BG,CC-BY-4.0,macro,"Burgas coast, July 2022 (Bulgarian proxy)"
+29.6260,41.0082,1664582400,0.7400,MDT_2022_TR,CC-BY-4.0,macro,"Istanbul Bosphorus, October 2022"
+35.3833,45.1167,1672531200,0.3700,Pogojeva2021_S1,CC-BY-4.0,macro,"Kerch Strait approach, January 2023"
+37.4500,44.5667,1685577600,0.4900,Pogojeva2021_S1,CC-BY-4.0,meso,"Gelendzhik bay, June 2023"
+41.6486,41.6086,1693526400,0.2100,EMODnet_Chemistry_2023,CC-BY-4.0,macro,"Batumi shelf, September 2023"
+39.6534,43.9967,1701388800,0.5200,Pogojeva2021_S1,CC-BY-4.0,macro,"Adler approach, December 2023"

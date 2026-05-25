@@ -1,0 +1,67 @@
+groups:
+  - name: tideguard-api
+    interval: 30s
+    rules:
+      - alert: TideguardForecastLatencyP95High
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum by (le, source) (
+              rate(tideguard_forecast_latency_seconds_bucket[5m])
+            )
+          ) > 2.0
+        for: 5m
+        labels:
+          severity: warning
+          service: tideguard-api
+        annotations:
+          summary: "TideGuard forecast P95 latency > 2s ({{ $labels.source }})"
+          description: |
+            P95 latency for /forecast inference has been above 2s for 5
+            minutes. This usually means the PINN ensemble is overloaded
+            or torch is hot-reloading.
+
+      - alert: TideguardExceedanceLatencyP95High
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum by (le) (
+              rate(tideguard_exceedance_latency_seconds_bucket[5m])
+            )
+          ) > 3.0
+        for: 5m
+        labels:
+          severity: warning
+          service: tideguard-api
+        annotations:
+          summary: "TideGuard exceedance P95 latency > 3s"
+
+      - alert: TideguardModelUnloaded
+        expr: max(tideguard_model_loaded) == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: tideguard-api
+        annotations:
+          summary: "TideGuard PINN checkpoint is not loaded"
+          description: |
+            The PINN ensemble checkpoint is not loaded in memory.
+            The API will fall back to the perturbed-initial-condition
+            (PIC) mock. Check PINN_ENSEMBLE_DIR and the API logs.
+
+      - alert: TideguardHighReportRejectRate
+        expr: |
+          sum(rate(tideguard_report_uploads_total{result="rejected"}[10m]))
+            /
+          sum(rate(tideguard_report_uploads_total[10m]))
+          > 0.30
+        for: 10m
+        labels:
+          severity: warning
+          service: tideguard-api
+        annotations:
+          summary: "Citizen-report rejection rate > 30%"
+          description: |
+            More than 30% of /reports uploads have been rejected in the
+            past 10 minutes. Possible spam attack, ClamAV outage, or
+            new client bug.

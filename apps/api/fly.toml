@@ -1,0 +1,36 @@
+app = "tideguard-api"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  ENV = "staging"
+  DATABASE_URL = "sqlite+aiosqlite:////data/tideguard.db"
+  ALLOW_ANONYMOUS_DEV_USER = "true"
+  API_KEY_ENFORCEMENT = "false"
+  CORS_ORIGINS = "https://*.vercel.app,http://localhost:3000"
+  CORS_ORIGIN_REGEX = "https://.*\\.vercel\\.app$"
+  JWT_SECRET = "tideguard-public-demo-secret-not-for-production-use-32chars"
+
+[mounts]
+  source = "tideguard_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 50
+    hard_limit = 100
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

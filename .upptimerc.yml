@@ -1,0 +1,39 @@
+owner: BitMagistrate
+repo: TideGuard-upptime
+
+sites:
+  - name: TideGuard API
+    url: https://api.tideguard.app/healthz
+    expectedStatusCodes:
+      - 200
+  - name: TideGuard Web
+    url: https://tideguard.app/
+    expectedStatusCodes:
+      - 200
+      - 304
+  - name: Forecast endpoint (Black Sea)
+    url: https://api.tideguard.app/forecast?bbox=27,40,42,47&horizon=7
+    expectedStatusCodes:
+      - 200
+  - name: Probability-of-exceedance endpoint
+    url: https://api.tideguard.app/forecast/exceedance?bbox=27,40,42,47&quantile=0.9
+    expectedStatusCodes:
+      - 200
+  - name: Leaderboard
+    url: https://api.tideguard.app/leaderboard
+    expectedStatusCodes:
+      - 200
+
+status-website:
+  cname: status.tideguard.app
+  name: TideGuard Status
+  introTitle: "TideGuard AI status"
+  introMessage: "Public uptime + response-time history for the TideGuard API and web app."
+  navbar:
+    - title: Home
+      href: /
+    - title: GitHub
+      href: https://github.com/BitMagistrate/TideGuard
+
+assignees:
+  - BitMagistrate

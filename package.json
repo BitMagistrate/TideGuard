@@ -1,0 +1,16 @@
+{
+  "name": "tideguard",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "pnpm --filter @tideguard/web dev",
+    "build": "pnpm --filter @tideguard/web build",
+    "lint:web": "pnpm --filter @tideguard/web lint",
+    "lint:api": "cd apps/api && uv run ruff check .",
+    "lint:ml": "cd apps/ml && uv run ruff check .",
+    "typecheck:api": "cd apps/api && uv run mypy src",
+    "test:api": "cd apps/api && uv run pytest -q",
+    "test:ml": "cd apps/ml && uv run pytest -q",
+    "test:web": "pnpm --filter @tideguard/web test"
+  }
+}

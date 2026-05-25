@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Еженедельный отчёт TideGuard — {{ region.display_name_ru }}</title>
+<style>
+ @page { size: A4; margin: 18mm; }
+ body { font-family: "Helvetica", "Arial", sans-serif; color: #111; }
+ h1 { color: #0f766e; font-size: 22pt; margin: 0 0 6pt; }
+ h2 { color: #0f766e; margin-top: 18pt; font-size: 13pt; }
+ .meta { color: #6b7280; font-size: 9pt; margin-bottom: 12pt; }
+ .summary table { width: 100%; border-collapse: collapse; }
+ .summary td { padding: 6pt 8pt; border-bottom: 1px solid #e5e7eb; }
+ .summary td.key { width: 45%; color: #6b7280; }
+ .pill { display:inline-block;padding:2pt 6pt;border-radius:6pt;color:#fff;background:#10b981;font-size:9pt; }
+ .pill.red { background:#ef4444; } .pill.orange { background:#f59e0b; }
+ footer { margin-top: 24pt; font-size: 8pt; color: #6b7280; border-top:1px solid #e5e7eb; padding-top:6pt; }
+</style>
+</head>
+<body>
+<h1>Еженедельный отчёт TideGuard</h1>
+<div class="meta">Регион: {{ region.display_name_ru }} ({{ region.country }})<br>
+Сгенерировано: {{ generated_at }}<br>
+Длина береговой линии: {{ region.beach_length_km }} км
+</div>
+
+<h2>Ключевые показатели</h2>
+<div class="summary">
+<table>
+ <tr><td class="key">Максимальная вероятность превышения за неделю</td><td>
+  {% set p = summary.max_p_exceed %}
+  <span class="pill {% if p >= 0.7 %}red{% elif p >= 0.4 %}orange{% endif %}">
+   {{ "%.0f"|format(p * 100) }}%
+  </span></td></tr>
+ <tr><td class="key">Прогнозируемый объём мусора</td><td>{{ "%.1f"|format(summary.kg_predicted) }} кг</td></tr>
+ <tr><td class="key">Горячих точек (p ≥ 0.5)</td><td>{{ summary.hotspot_count }}</td></tr>
+ <tr><td class="key">Сообщений за 7 дней</td><td>{{ summary.reports_last_7d }}</td></tr>
+ <tr><td class="key">Волонтёров за 7 дней</td><td>{{ summary.volunteers_last_7d }}</td></tr>
+ <tr><td class="key">Последний субботник</td>
+     <td>{{ summary.last_cleanup_at or "—" }}</td></tr>
+</table>
+</div>
+
+<h2>Рекомендуемые действия</h2>
+<ol>
+ <li>Активировать VRP-планировщик и сформировать маршрут на ближайший вторник.</li>
+ <li>Отправить уведомления группам {{ region.metadata.contact_groups | default(['#cleanup-1','#cleanup-2']) | join(', ') }}.</li>
+ <li>Подготовить локацию для следующего публичного субботника на основании топ-5 горячих точек.</li>
+</ol>
+
+<h2>Методология</h2>
+<p>Прогнозы строятся PINN-ансамблем (v0.4), агрегированы по квантилю 0.85 с 7-дневным горизонтом.
+Модуль ESG/Insurance использует версию методологии {{ region.metadata.methodology_version | default('esg-v1.0') }}.</p>
+
+<footer>TideGuard AI · отчёт сгенерирован автоматически · подпись X-Verification-Hash отображается в HTTP-заголовках ответа.</footer>
+</body>
+</html>

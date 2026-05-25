@@ -1,0 +1,18 @@
+app = "tideguard-bot"
+primary_region = "fra"
+
+[build]
+dockerfile = "Dockerfile"
+build-target = "base"
+
+[env]
+TIDEGUARD_API_BASE = "https://api.tideguard.app"
+LOG_LEVEL = "INFO"
+
+[[vm]]
+size = "shared-cpu-1x"
+memory = "256mb"
+cpus = 1
+
+[deploy]
+strategy = "rolling"

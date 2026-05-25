@@ -1,0 +1,36 @@
+name: Healthcheck
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # every 15 minutes
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: API
+        id: api
+        run: |
+          code=$(curl -m 10 -o /tmp/api.json -s -w "%{http_code}" https://api.tideguard.app/healthz || true)
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          cat /tmp/api.json | head -c 200 || true
+      - name: Web
+        id: web
+        run: |
+          code=$(curl -m 10 -o /tmp/web.html -s -w "%{http_code}" https://tideguard.app || true)
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+      - name: Alert Telegram on failure
+        if: steps.api.outputs.code != '200' || steps.web.outputs.code != '200'
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "No Telegram secret configured; skipping notification."
+            exit 0
+          fi
+          curl -fsS -X POST \
+            "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ TideGuard healthcheck — API HTTP ${{ steps.api.outputs.code }} · Web HTTP ${{ steps.web.outputs.code }}"

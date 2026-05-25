@@ -1,0 +1,101 @@
+{
+  "csv": "/home/ubuntu/work/tideguard-final/apps/ml/data/real/black_sea_2021_2025.csv",
+  "n_observations": 4983,
+  "bbox": [
+    27.0,
+    40.0,
+    42.0,
+    47.0
+  ],
+  "threshold_quantile": 0.9,
+  "threshold_value": 0.30444000000000015,
+  "metrics": {
+    "pinn": {
+      "rmse": 0.07410452112048503,
+      "mae": 0.05168672723127385,
+      "nse": 0.7242361713366872,
+      "brier": 0.06942564974715966,
+      "roc_auc": 0.9697092668834547,
+      "ece": 0.07938553352012091
+    },
+    "persistence": {
+      "rmse": 0.141115934161089,
+      "mae": 0.10239986462501502,
+      "nse": 0.0,
+      "brier": 0.09211082127086422,
+      "roc_auc": 0.5,
+      "ece": 0.04470412627140765
+    },
+    "climatology": {
+      "rmse": 0.1339166987542834,
+      "mae": 0.09576137950904237,
+      "nse": 0.0994302407594897,
+      "brier": 0.08925438075731076,
+      "roc_auc": 0.725788553020403,
+      "ece": 0.044704126271407664
+    },
+    "fno": {
+      "rmse": 0.11985357780635232,
+      "mae": 0.07819975138701923,
+      "nse": 0.2786435893748387,
+      "brier": 0.08458370772528037,
+      "roc_auc": 0.8472120422826027,
+      "ece": 0.05411024246535344
+    },
+    "bma": {
+      "rmse": 0.07410452112048503,
+      "mae": 0.05168672723127385,
+      "nse": 0.7242361713366872,
+      "brier": 0.0694256494162613,
+      "roc_auc": 0.9697092668834547,
+      "ece": 0.07938553350465016
+    },
+    "bma_weights": {
+      "pinn": 1.0,
+      "fno": 0.0,
+      "climatology": 0.0
+    }
+  },
+  "statistical_tests": {
+    "dm_pinn_vs_persistence": {
+      "statistic": -22.514177518273232,
+      "p_value": 3.014807536589118e-112,
+      "n": 4983,
+      "sign": -1
+    },
+    "dm_pinn_vs_climatology": {
+      "statistic": -22.923969555712876,
+      "p_value": 2.6799880085311997e-116,
+      "n": 4983,
+      "sign": -1
+    },
+    "bootstrap_pinn_vs_persistence": {
+      "delta_mean": -0.06701141304060397,
+      "ci_low": -0.07128179341823794,
+      "ci_high": -0.06292385352966816,
+      "n_replicates": 500,
+      "confidence": 0.95
+    },
+    "bootstrap_pinn_vs_climatology": {
+      "delta_mean": -0.059812177633798355,
+      "ci_low": -0.06389299867848366,
+      "ci_high": -0.0561551522724664,
+      "n_replicates": 500,
+      "confidence": 0.95
+    },
+    "dm_bma_vs_persistence": {
+      "statistic": -22.514177518273232,
+      "p_value": 3.014807536589118e-112,
+      "n": 4983,
+      "sign": -1
+    }
+  },
+  "notes": [
+    "observations after bbox filter: 4983",
+    "threshold @ q=0.90: 0.3044",
+    "p_value < 0.05 indicates a statistically significant skill difference",
+    "bootstrap CI not crossing zero indicates a significant difference at the 5% level",
+    "PINN ensemble: 5 members; mean std=0.0174",
+    "FNO ensemble: 3 members; BMA across PINN+FNO+climatology"
+  ]
+}

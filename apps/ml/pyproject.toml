@@ -1,0 +1,53 @@
+[project]
+name = "tideguard-ml"
+version = "0.1.0"
+description = "TideGuard PINN — Physics-Informed Neural Network for marine debris forecasting"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.0",
+    "numpy>=1.24",
+    "xarray>=2024.1",
+    "zarr>=2.16",
+    "matplotlib>=3.8",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "pytest>=8.0",
+]
+ingest = [
+    "copernicusmarine>=1.0",
+    "cdsapi>=0.6",
+    "rioxarray>=0.15",
+    "cartopy>=0.22",
+]
+train = [
+    "wandb>=0.16",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tideguard_ml"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E402"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["tideguard_ml"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

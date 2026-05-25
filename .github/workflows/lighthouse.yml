@@ -1,0 +1,31 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/lighthouse.yml"
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: pnpm/action-setup@v3
+        with:
+          version: "9"
+      - run: pnpm install --frozen-lockfile
+      - name: Build web
+        working-directory: apps/web
+        run: pnpm build
+      - name: Run Lighthouse CI
+        run: |
+          npx --yes @lhci/cli@0.13.x autorun \
+            --collect.startServerCommand="pnpm --filter @tideguard/web start" \
+            --collect.url=http://localhost:3000 \
+            --collect.url=http://localhost:3000/method \
+            --collect.url=http://localhost:3000/learn \
+            --assert.preset=lighthouse:recommended || true

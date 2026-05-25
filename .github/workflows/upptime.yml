@@ -1,0 +1,66 @@
+name: Uptime CI
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  repository_dispatch:
+    types: [uptime, status_update]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  uptime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update status
+        uses: upptime/uptime-monitor@v1.34.0
+        with:
+          command: "update"
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        continue-on-error: true
+
+  response-time:
+    runs-on: ubuntu-latest
+    needs: uptime
+    if: always()
+    steps:
+      - name: Update response-time graphs
+        uses: upptime/uptime-monitor@v1.34.0
+        with:
+          command: "response-time"
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        continue-on-error: true
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: response-time
+    if: always()
+    steps:
+      - name: Update summary in README
+        uses: upptime/uptime-monitor@v1.34.0
+        with:
+          command: "readme"
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        continue-on-error: true
+
+  site:
+    runs-on: ubuntu-latest
+    needs: summary
+    if: always()
+    steps:
+      - name: Generate site
+        uses: upptime/uptime-monitor@v1.34.0
+        with:
+          command: "site"
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        continue-on-error: true

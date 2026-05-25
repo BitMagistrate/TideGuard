@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TideGuard ESG Sponsorship Report — {{ sponsor.name }}</title>
+<style>
+ @page { size: A4; margin: 18mm; }
+ body { font-family: "Helvetica", "Arial", sans-serif; color: #111; }
+ h1 { color: #1e40af; font-size: 22pt; margin-bottom: 0; }
+ .subtitle { color: #6b7280; font-size: 10pt; margin-top: 2pt; }
+ .logo { max-height: 64px; }
+ .kpi { display: flex; flex-wrap: wrap; gap: 12pt; margin: 18pt 0; }
+ .kpi .box { flex: 1 1 30%; border: 1px solid #e5e7eb; padding: 12pt; border-radius: 6pt; min-width: 140pt; }
+ .kpi .num { font-size: 24pt; font-weight: 700; color: #1e40af; }
+ .kpi .lbl { font-size: 9pt; color: #6b7280; }
+ footer { margin-top: 24pt; font-size: 8pt; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 6pt; }
+ .hash { font-family: "Monaco", monospace; font-size: 8pt; word-break: break-all; }
+</style>
+</head>
+<body>
+{% if sponsor.logo_url %}<img class="logo" src="{{ sponsor.logo_url }}" alt="{{ sponsor.name }}">{% endif %}
+<h1>ESG Impact Report</h1>
+<div class="subtitle">
+ Sponsor: <strong>{{ sponsor.name }}</strong> · Period: {{ period_start }} – {{ period_end }}<br>
+ Generated: {{ generated_at }} · Methodology: {{ methodology_version }}
+</div>
+
+<div class="kpi">
+ <div class="box"><div class="num">{{ "%.0f"|format(metrics.kg_collected_cleanup) }} kg</div>
+   <div class="lbl">Plastic removed (cleanup events)</div></div>
+ <div class="box"><div class="num">{{ "%.0f"|format(metrics.kg_predicted_prevented) }} kg</div>
+   <div class="lbl">Plastic prevented via early warning</div></div>
+ <div class="box"><div class="num">{{ "%.1f"|format(metrics.co2_avoided_kg) }} kg CO₂</div>
+   <div class="lbl">CO₂-equivalent avoided</div></div>
+ <div class="box"><div class="num">{{ metrics.n_reports }}</div>
+   <div class="lbl">Verified citizen reports</div></div>
+ <div class="box"><div class="num">{{ metrics.n_volunteers }}</div>
+   <div class="lbl">Volunteer participants</div></div>
+</div>
+
+<h2 style="color:#1e40af">Methodology</h2>
+<p>Risk and impact metrics are produced by TideGuard's PINN-ensemble v0.4 and the ESG engine
+described in <a href="https://tideguard.app/esg/methodology">/esg/methodology</a>. Plastic prevention
+is the difference between forecast exceedance integrals with and without the sponsor's funded
+cleanup interventions over the reporting window.</p>
+
+<footer>
+ Verification hash (SHA-256 of the report inputs):<br>
+ <span class="hash">{{ verification_hash }}</span><br><br>
+ Report ID is signed deterministically — the same inputs always produce the same hash.<br>
+ Powered by TideGuard · {{ sponsor.website or "https://tideguard.app" }}
+</footer>
+</body>
+</html>
